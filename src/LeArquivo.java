@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+
 
 public class LeArquivo {
 
@@ -43,7 +45,10 @@ public class LeArquivo {
             arqNome.close();
             arqCodigo.close();
             arqValor.close();
-        } catch (Exception e){
+
+        } catch (FileNotFoundException e){
+            System.out.println("Nao existe lista a ser recuperada");
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

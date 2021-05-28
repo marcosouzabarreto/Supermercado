@@ -1,8 +1,26 @@
-
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Supermercado {
+
+    public static void excluiGravacao() {
+        boolean a, b, c;
+        File nameFile = new File("save\\nome.txt");
+        File codeFile = new File("save\\codigos.txt");
+        File valueFile = new File("save\\valores.txt");
+
+        a = nameFile.delete();
+        b = codeFile.delete();
+        c = valueFile.delete();
+
+        if (a && b && c) {
+            System.out.println("Lista excluida com sucesso");
+        } else {
+            System.out.println("Nao existe lista a ser excluida");
+        }
+
+    }
 
     public static void gravacao(Produtos[] vetor) throws IOException {
         SalvaArquivo save = new SalvaArquivo(vetor);
@@ -19,6 +37,7 @@ public class Supermercado {
         String codigo;
         int i, achou = 0;
 
+        System.out.println("Digite o codigo do produto a ser excluido: ");
         codigo = new Scanner(System.in).nextLine();
 
         for (i = 0; i < vetor.length; i++) {
@@ -37,6 +56,8 @@ public class Supermercado {
     public static void excluiPeloNome(Produtos[] vetor) {
         String nome;
         int i, achou = 0;
+
+        System.out.println("Digite o nome do produto a ser excluido: ");
 
         nome = new Scanner(System.in).nextLine();
 
@@ -68,18 +89,25 @@ public class Supermercado {
 
     public static void listaProdutos(Produtos[] vetor) {
         int i;
+        boolean foi = false;
+        System.out.println("===================================");
+        for (i = 0; i < vetor.length; i++) {
 
 
-            for (i = 0; i < vetor.length; i++) {
-
-                if (vetor[i] != null) {
-                    if (i == 0) System.out.println("===================================");
-                    System.out.println("Produto: " + vetor[i].getNome());
-                    System.out.println("Valor: R$ " + vetor[i].getValor());
-                    System.out.println("Codigo: " + vetor[i].getCodigoDeBarras());
-                    System.out.println("===================================");
-                }
+            if (vetor[i] != null) {
+                System.out.println("Produto: " + vetor[i].getNome());
+                System.out.println("Valor: R$ " + vetor[i].getValor());
+                System.out.println("Codigo: " + vetor[i].getCodigoDeBarras());
+                System.out.println("===================================");
+                foi = true;
             }
+        }
+        if (!foi) {
+
+            System.out.println("Nenhum produto foi encontrado");
+            System.out.println("===================================");
+
+        }
 
 
     }
@@ -123,16 +151,25 @@ public class Supermercado {
     public static void menuSave(Produtos[] vetor) throws IOException {
 
         int op;
-        System.out.println("Digite 1 para salvar a lista e 2 para recuperar a lista salva");
+        System.out.println("Digite 1 para salvar a lista,\n" +
+                "2 para recuperar a lista salva e\n" +
+                "3 para excluir a lista salva");
         op = new Scanner(System.in).nextInt();
 
-        if (op == 1) {
-            gravacao(vetor);
-        } else if (op == 2) {
-            leitura(vetor);
-        } else {
-            System.out.println("Opcao indisponivel");
+        switch (op) {
+            case 1:
+                gravacao(vetor);
+                break;
+            case 2:
+                leitura(vetor);
+                break;
+            case 3:
+                excluiGravacao();
+                break;
+            default:
+                System.out.println("Opcao indisponivel");
         }
+
     }
 
     public static void main(String[] args) throws IOException {
